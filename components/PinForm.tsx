@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
 import { SECTORS } from "@/lib/sectors";
 import { PinFormData } from "@/lib/types";
@@ -41,11 +41,25 @@ export default function PinForm({ position, onClose }: PinFormProps) {
     image: null,
     ens: "",
     dacc_statement: "",
+    tags: [],
     sector: SECTORS[0].name,
   });
+  const [tagInput, setTagInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const addTag = useCallback(() => {
+    const tag = tagInput.trim().toLowerCase();
+    if (tag && !formData.tags.includes(tag) && formData.tags.length < 10) {
+      setFormData((p) => ({ ...p, tags: [...p.tags, tag] }));
+      setTagInput("");
+    }
+  }, [tagInput, formData.tags]);
+
+  const removeTag = useCallback((tag: string) => {
+    setFormData((p) => ({ ...p, tags: p.tags.filter((t) => t !== tag) }));
+  }, []);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -89,6 +103,7 @@ export default function PinForm({ position, onClose }: PinFormProps) {
         image_url: imageUrl,
         ens: formData.ens || null,
         dacc_statement: formData.dacc_statement || null,
+        tags: formData.tags.length > 0 ? formData.tags : null,
         sector: formData.sector,
         quadrant: sector?.quadrant || "Digital Coordination",
         x: position.x,
@@ -262,6 +277,53 @@ export default function PinForm({ position, onClose }: PinFormProps) {
                 setFormData((p) => ({ ...p, dacc_statement: e.target.value }))
               }
             />
+          </div>
+
+          <div>
+            <label className={labelClass}>
+              Tags (interests, skills, topics)
+            </label>
+            {formData.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mb-2">
+                {formData.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-500/20 border border-blue-400/30 rounded-full text-xs text-blue-300"
+                  >
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() => removeTag(tag)}
+                      className="text-blue-300/60 hover:text-white cursor-pointer"
+                    >
+                      &times;
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+            <div className="flex gap-2">
+              <input
+                className={inputClass}
+                placeholder="Add a tag..."
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    addTag();
+                  }
+                }}
+              />
+              <button
+                type="button"
+                onClick={addTag}
+                disabled={!tagInput.trim()}
+                className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white/60 hover:text-white hover:border-blue-400 disabled:opacity-30 transition-colors cursor-pointer flex-shrink-0"
+              >
+                +
+              </button>
+            </div>
           </div>
         </div>
 

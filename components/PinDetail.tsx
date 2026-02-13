@@ -62,6 +62,19 @@ export default function PinDetail({ pin, onClose }: PinDetailProps) {
           </div>
         )}
 
+        {pin.tags && pin.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {pin.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-2 py-0.5 bg-blue-500/20 border border-blue-400/30 rounded-full text-xs text-blue-300"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
         <div className="space-y-2 text-sm">
           {pin.telegram && (
             <div className="flex items-center gap-2">

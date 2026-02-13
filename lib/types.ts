@@ -7,6 +7,7 @@ export interface Pin {
   image_url: string | null;
   ens: string | null;
   dacc_statement: string | null;
+  tags: string[] | null;
   sector: string;
   quadrant: string;
   x: number;
@@ -22,5 +23,6 @@ export interface PinFormData {
   image: File | null;
   ens: string;
   dacc_statement: string;
+  tags: string[];
   sector: string;
 }
