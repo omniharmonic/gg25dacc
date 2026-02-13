@@ -36,10 +36,6 @@ yarn-error.log*
 # vercel
 .vercel
 
-# large assets
-.claude/Back.svg
-public/map.svg
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
