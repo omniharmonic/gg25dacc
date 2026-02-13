@@ -25,6 +25,7 @@ export const SECTORS: Sector[] = [
   { name: "Cross-Chain Infrastructure", quadrant: "Digital Coordination" },
   { name: "Data Availability & Storage", quadrant: "Digital Coordination" },
   { name: "Streaming & Treasury", quadrant: "Digital Coordination" },
+  { name: "Ecosystem Connector", quadrant: "Digital Coordination" },
 ];
 
 export const QUADRANTS = [
