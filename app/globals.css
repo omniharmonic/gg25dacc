@@ -3,4 +3,17 @@
 body {
   margin: 0;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent iOS zoom on input focus (requires 16px minimum) */
+input,
+select,
+textarea {
+  font-size: 16px !important;
+}
+
+/* Safe area padding for notched devices */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }

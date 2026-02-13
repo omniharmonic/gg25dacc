@@ -106,24 +106,32 @@ export default function PinForm({ position, onClose }: PinFormProps) {
   };
 
   const inputClass =
-    "w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-blue-400 text-sm";
+    "w-full px-3 py-2.5 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-blue-400";
   const labelClass = "block text-xs font-medium text-white/70 mb-1";
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+    <div
+      className="fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center"
+      onClick={onClose}
+    >
       <form
         onSubmit={handleSubmit}
-        className="bg-gray-900 border border-white/10 rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto"
+        className="bg-gray-900 border-t sm:border border-white/10 sm:rounded-2xl rounded-t-2xl p-5 sm:p-6 w-full sm:max-w-md max-h-[85dvh] overflow-y-auto safe-bottom"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Drag handle - mobile */}
+        <div className="sm:hidden flex justify-center mb-3">
+          <div className="w-10 h-1 bg-white/20 rounded-full" />
+        </div>
+
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-white">
+          <h2 className="text-base sm:text-lg font-semibold text-white">
             Place Yourself on the Map
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="text-white/50 hover:text-white text-xl cursor-pointer"
+            className="text-white/50 hover:text-white text-xl cursor-pointer p-1"
           >
             &times;
           </button>
@@ -134,15 +142,19 @@ export default function PinForm({ position, onClose }: PinFormProps) {
             <button
               type="button"
               onClick={() => fileRef.current?.click()}
-              className="w-16 h-16 rounded-full border-2 border-dashed border-white/30 flex items-center justify-center overflow-hidden hover:border-blue-400 transition-colors flex-shrink-0 cursor-pointer"
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-dashed border-white/30 flex items-center justify-center overflow-hidden hover:border-blue-400 active:border-blue-400 transition-colors flex-shrink-0 cursor-pointer"
             >
               {preview ? (
-                <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                <img
+                  src={preview}
+                  alt="Preview"
+                  className="w-full h-full object-cover"
+                />
               ) : (
                 <span className="text-white/40 text-2xl">+</span>
               )}
             </button>
-            <div className="text-xs text-white/50">Click to upload your photo</div>
+            <div className="text-xs text-white/50">Tap to upload your photo</div>
             <input
               ref={fileRef}
               type="file"
@@ -154,53 +166,110 @@ export default function PinForm({ position, onClose }: PinFormProps) {
 
           <div>
             <label className={labelClass}>Name *</label>
-            <input required className={inputClass} placeholder="Your name"
-              value={formData.name} onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))} />
+            <input
+              required
+              className={inputClass}
+              placeholder="Your name"
+              autoComplete="name"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData((p) => ({ ...p, name: e.target.value }))
+              }
+            />
           </div>
 
           <div>
             <label className={labelClass}>Organization / Project *</label>
-            <input required className={inputClass} placeholder="Your organization or project"
-              value={formData.organization} onChange={(e) => setFormData((p) => ({ ...p, organization: e.target.value }))} />
+            <input
+              required
+              className={inputClass}
+              placeholder="Your organization or project"
+              autoComplete="organization"
+              value={formData.organization}
+              onChange={(e) =>
+                setFormData((p) => ({ ...p, organization: e.target.value }))
+              }
+            />
           </div>
 
           <div>
             <label className={labelClass}>d/acc Sector *</label>
-            <select required className={inputClass} value={formData.sector}
-              onChange={(e) => setFormData((p) => ({ ...p, sector: e.target.value }))}>
+            <select
+              required
+              className={inputClass}
+              value={formData.sector}
+              onChange={(e) =>
+                setFormData((p) => ({ ...p, sector: e.target.value }))
+              }
+            >
               {SECTORS.map((s) => (
-                <option key={s.name} value={s.name}>{s.name} ({s.quadrant})</option>
+                <option key={s.name} value={s.name}>
+                  {s.name} ({s.quadrant})
+                </option>
               ))}
             </select>
           </div>
 
           <div>
             <label className={labelClass}>Email *</label>
-            <input required type="email" className={inputClass} placeholder="you@example.com"
-              value={formData.email} onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))} />
+            <input
+              required
+              type="email"
+              className={inputClass}
+              placeholder="you@example.com"
+              autoComplete="email"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData((p) => ({ ...p, email: e.target.value }))
+              }
+            />
           </div>
 
           <div>
             <label className={labelClass}>Telegram Username</label>
-            <input className={inputClass} placeholder="@username"
-              value={formData.telegram} onChange={(e) => setFormData((p) => ({ ...p, telegram: e.target.value }))} />
+            <input
+              className={inputClass}
+              placeholder="@username"
+              value={formData.telegram}
+              onChange={(e) =>
+                setFormData((p) => ({ ...p, telegram: e.target.value }))
+              }
+            />
           </div>
 
           <div>
             <label className={labelClass}>ENS</label>
-            <input className={inputClass} placeholder="name.eth"
-              value={formData.ens} onChange={(e) => setFormData((p) => ({ ...p, ens: e.target.value }))} />
+            <input
+              className={inputClass}
+              placeholder="name.eth"
+              value={formData.ens}
+              onChange={(e) =>
+                setFormData((p) => ({ ...p, ens: e.target.value }))
+              }
+            />
           </div>
 
           <div>
-            <label className={labelClass}>How do you see yourself as part of d/acc?</label>
-            <textarea className={`${inputClass} resize-none`} rows={3} placeholder="Describe your role in d/acc..."
-              value={formData.dacc_statement} onChange={(e) => setFormData((p) => ({ ...p, dacc_statement: e.target.value }))} />
+            <label className={labelClass}>
+              How do you see yourself as part of d/acc?
+            </label>
+            <textarea
+              className={`${inputClass} resize-none`}
+              rows={2}
+              placeholder="Describe your role in d/acc..."
+              value={formData.dacc_statement}
+              onChange={(e) =>
+                setFormData((p) => ({ ...p, dacc_statement: e.target.value }))
+              }
+            />
           </div>
         </div>
 
-        <button type="submit" disabled={submitting}
-          className="w-full mt-4 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 text-white font-medium rounded-lg transition-colors cursor-pointer">
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full mt-4 py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:bg-blue-600/50 text-white font-medium rounded-lg transition-colors cursor-pointer"
+        >
           {submitting ? "Placing..." : "Place on Map"}
         </button>
       </form>
